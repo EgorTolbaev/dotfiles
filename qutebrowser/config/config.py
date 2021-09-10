@@ -10,6 +10,7 @@
 ##   qute://help/configuring.html
 ##   qute://help/settings.html
 
+from sys import platform
 
 ## This is here so configs done via the GUI are still loaded.
 ## Remove it to not load settings done via the GUI.
@@ -38,8 +39,16 @@ c.tabs.show = 'always'
 
 # Setting default page for when opening new tabs or new windows with
 # commands like :open -t and :open -w .
-c.url.start_pages = 'c:/homepage/html/homepage.html'
+if platform == "linux" or platform == "linux2":
+    c.url.start_pages = '~/homepage/html/homepage.html'
+elif platform == "win32":
+    c.url.start_pages = 'c:/homepage/html/homepage.html'
 
+## Enable pdf.js to view PDF files in the browser. Note that the files
+## can still be downloaded by clicking the download button in the pdf.js
+## viewer.
+## Type: Bool
+c.content.pdfjs = True
 
 # Search engines which can be used via the address bar.  Maps a search
 # engine name (such as `DEFAULT`, or `ddg`) to a URL with a `{}`
@@ -91,4 +100,7 @@ config.bind('xt',       'config-cycle tabs.show always never')
 config.bind('xx',       'config-cycle statusbar.show always never;; config-cycle tabs.show always never')
 config.bind('i',        'mode-enter insert', mode='normal')
 config.bind('<Escape>', 'clear-keychain ;; search ;; fullscreen --leave', mode='normal')
-config.bind('ii', 'mode-leave', mode='insert')
+config.bind('ii',       'mode-leave', mode='insert')
+
+config.bind('y',        'prompt-accept yes', mode='yesno')
+config.bind('n',        'prompt-accept no',  mode='yesno')
